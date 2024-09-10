@@ -58,7 +58,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="user:${users}">
+                    <tr th:each="user:${users}" th:if="${namee != user.pseudo}">
                         <td th:text="${user.pseudo}"></td>
                         <td th:text="${#dates.format(user.createdDate, 'dd/MM/yyyy')}"></td>
 <!--                        <td th:text="${user.address != null ? user.address.city : 'Non défini'}"></td>-->
@@ -70,7 +70,7 @@
                             <a th:href="@{/users/delete/{id}(id=${user.id_user})}" class="btn btn-danger btn-sm" onclick="confirmDelete(event, this)">Supprimer</a>
 
                             <a th:href="@{/users/toggleStatus/{id}(id=${user.id_user})}" class="btn btn-secondary btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir changer le statut de cet utilisateur ?')">
-                                <span th:text="${user.active ? 'Désactiver' : 'Activer'}"></span>
+<!--                                <span th:text="${user.active ? 'Désactiver' : 'Activer'}"></span>-->
                             </a>
                         </td>
                     </tr>

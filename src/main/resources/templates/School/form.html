@@ -39,7 +39,7 @@
 
                 <div class="card-content">
                     <div class="card-body">
-                        <form th:action="@{/schools/postSchools}" method="post" class="w-75 py-5" th:object="${schools}"   enctype="multipart/form-data">
+                        <form th:action="@{/schools}" method="post" class="w-75 py-5" th:object="${schools}"   enctype="multipart/form-data">
 
                             <input type="hidden" th:field="*{id_school}"/>
 

@@ -69,6 +69,15 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-12 col-12">
+                                    <select   class="form-control" required th:field="*{roleName} ">
+                                        <option th:each="rolee : ${roles}"
+                                                th:value="${rolee.idRoleUser}"
+                                                th:text="${rolee.nameRole}">
+                                        </option>
+                                    </select>
+                                    </div>
+
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary mr-1 mb-1">Soumettre</button>
                                         <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Réinitialiser</button>

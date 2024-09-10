@@ -25,12 +25,8 @@ public class UserServiceImp implements UserService {
     private final UserMapper userMapper;
     @Override
     public UserDTO save(UserDTO userDTO) {
-        // Convertir le DTO en entité
-        User user = userMapper.DtoToEntity(userDTO);
-        // Enregistrer l'entité dans la base de données
-        User savedUser = userRepository.save(user);
-        // Convertir l'entité enregistrée de nouveau en DTO pour retourner
-        return userMapper.ToDto(savedUser);
+        return userMapper.ToDto(userRepository.save(userMapper.DtoToEntity(userDTO)));
+
     }
     @Override
     public UserDTO update(UserDTO userDTO) {
@@ -57,9 +53,8 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Optional<UserDTO> findOne(Long id) {
-        return userRepository.findById(id).map(user -> {
-            return userMapper.ToDto(user);
-        });
+        return userRepository.findById(id).map(user -> userMapper.ToDto(user));
+
     }
 
     @Override

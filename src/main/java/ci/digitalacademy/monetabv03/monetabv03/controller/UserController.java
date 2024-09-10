@@ -2,9 +2,13 @@ package ci.digitalacademy.monetabv03.monetabv03.controller;
 
 import ci.digitalacademy.monetabv03.monetabv03.service.RoleUserService;
 import ci.digitalacademy.monetabv03.monetabv03.service.UserService;
+import ci.digitalacademy.monetabv03.monetabv03.service.dto.RoleUserDTO;
+import ci.digitalacademy.monetabv03.monetabv03.service.dto.SetUserDTO;
 import ci.digitalacademy.monetabv03.monetabv03.service.dto.UserDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,20 +29,29 @@ public class UserController {
     private final RoleUserService roleUserService;
 
     @GetMapping("/add")
-    public String showAddUserPage(Model model){
-        model.addAttribute("user", new UserDTO());
+    public String showAddUserPage(HttpServletRequest request, Model model){
+        List<RoleUserDTO> all = roleUserService.getAll();
+        String currentUrl = request.getRequestURI();
+        model.addAttribute("currentUrl", currentUrl);
+        model.addAttribute("user", new SetUserDTO());
+        model.addAttribute("roles", all);
+//        model.addAttribute("user", new UserDTO());
         return "user/forms";
     }
 
     @PostMapping("/save")
-    public String saveUser(UserDTO userDTO){
-
-        if (userDTO.getCreatedDate() == null) {
-            userDTO.setCreatedDate(Instant.now());
-        }
-        userService.save(userDTO);
-        return "redirect:/users";
+    public String saveUser(HttpServletRequest request, Model model){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<UserDTO> users = userService.getAll();
+        List<RoleUserDTO> all = roleUserService.getAll();
+        String currentUrl = request.getRequestURI();
+        model.addAttribute("currentUrl", currentUrl);
+        model.addAttribute("users", users);
+        model.addAttribute("all", all);
+        model.addAttribute("namee", name);
+        return "user/list";
     }
+
     @GetMapping
     public String showUserPage(Model model){
         List<UserDTO> userDTOS = userService.getAll();
@@ -59,16 +72,28 @@ public class UserController {
     }
 
 
-    @GetMapping("/toggleStatus/{id}")
+    @GetMapping("/{id}")
+    public String showUpdateUserForm(HttpServletRequest request, Model model, @PathVariable Long id){
+        String currentUrl = request.getRequestURI();
+        Optional<UserDTO> user = userService.findOne(id);
+        model.addAttribute("currentUrl", currentUrl);
+        if(user.isPresent()){
+            model.addAttribute("user", user.get());
+            return "user/forms";
+        }else {
+            return "redirect:/users";
+        }
+    }
+
+    @PostMapping("/status/{id}")
     public String toggleUserStatus(@PathVariable Long id) {
         Optional<UserDTO> userDTO = userService.findOne(id);
-        if (userDTO.isPresent()) {
-            UserDTO user = userDTO.get();
-//            user.setActive(!user.isActive());
-            userService.save(user);
-        }
+        UserDTO userDTO1 = userDTO.get();
+        userDTO1.setActive(!userDTO1.getActive());
+        userService.save(userDTO1);
         return "redirect:/users";
     }
+
 
 
     @GetMapping("/delete/{id}")

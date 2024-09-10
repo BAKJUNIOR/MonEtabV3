@@ -32,11 +32,13 @@ import java.util.Date;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/reports")
-public class ReportController {
+public class GenerReportController {
+
 
     private final StudentService studentService;
     private final TeacherService teacherService;
     private final UserService userService;
+
 
 
     @GetMapping("/generatePdf")
@@ -266,6 +268,7 @@ public class ReportController {
         workbook.write(outputStream);
         workbook.close();
     }
+
 
 
 }

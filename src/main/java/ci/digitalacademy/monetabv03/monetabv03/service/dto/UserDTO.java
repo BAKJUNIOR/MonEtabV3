@@ -18,12 +18,13 @@ public class UserDTO {
     private String pseudo;
 
     private String password;
+    private Boolean active;
 
     private Instant createdDate;
 
     private Set<RoleUserDTO> roleUser;
 
     private SchoolDTO school;
-//    private boolean active;
+
 
 }

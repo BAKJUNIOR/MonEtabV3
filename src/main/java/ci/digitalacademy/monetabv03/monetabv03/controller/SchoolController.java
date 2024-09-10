@@ -41,18 +41,48 @@ public class SchoolController {
         return "School/form";
     }
 
-    @PostMapping("/postSchools")
-    public String saveSchool(@ModelAttribute RegistrationSchoolDTO registrationSchoolDTO) throws IOException {
-        String upload = fileStorageService.upload(registrationSchoolDTO.getFile());
-        AppSettingDTO settingDTO = appSettingService.findAll().stream().findFirst().orElse(null);
-        registrationSchoolDTO.setAppSetting(settingDTO);
-        registrationSchoolDTO.setUrlLogo(upload);
-        SchoolDTO savedSchool = schoolService.save(registrationSchoolDTO);
+//    @PostMapping("/postSchools")
+//    public String saveSchool(@ModelAttribute RegistrationSchoolDTO registrationSchoolDTO) throws IOException {
+//        String upload = fileStorageService.upload(registrationSchoolDTO.getFile());
+//        AppSettingDTO settingDTO = appSettingService.findAll().stream().findFirst().orElse(null);
+//        registrationSchoolDTO.setAppSetting(settingDTO);
+//        registrationSchoolDTO.setUrlLogo(upload);
+//        SchoolDTO savedSchool = schoolService.save(registrationSchoolDTO);
+//
+//        // Créer les utilisateurs associés à l'école
+//        SaveUser(savedSchool);
+//        return "redirect:/";
+//    }
 
-        // Créer les utilisateurs associés à l'école
-        SaveUser(savedSchool);
+
+
+    @PostMapping
+    public String saveSchool(@ModelAttribute RegistrationSchoolDTO registrationSchoolDto) throws IOException {
+        if (registrationSchoolDto.getId_school() != null){
+            if (registrationSchoolDto.getFile().isEmpty()){
+                SchoolDTO schoolDTO = schoolService.getAll().stream().findFirst().orElse(null);
+                registrationSchoolDto.setUrlLogo(schoolDTO.getUrlLogo());
+                schoolService.save(registrationSchoolDto);
+                return "redirect:schools/update";
+            }
+            RegistrationSchoolDTO file = file(registrationSchoolDto);
+            schoolService.save(file);
+            return "redirect:schools/update";
+        }
+        RegistrationSchoolDTO file = file(registrationSchoolDto);
+        SchoolDTO save = schoolService.save(file);
+        SaveUser(save);
         return "redirect:/";
     }
+
+    public RegistrationSchoolDTO file(RegistrationSchoolDTO registrationSchoolDto) throws IOException {
+        String upload = fileStorageService.upload(registrationSchoolDto.getFile());
+        AppSettingDTO settingDTO = appSettingService.findAll().stream().findFirst().orElse(null);
+        registrationSchoolDto.setAppSetting(settingDTO);
+        registrationSchoolDto.setUrlLogo(upload);
+        return registrationSchoolDto;
+    }
+
 
 
     @GetMapping("/update")
@@ -67,6 +97,7 @@ public class SchoolController {
         return "School/form";
 
     }
+
 
 
 

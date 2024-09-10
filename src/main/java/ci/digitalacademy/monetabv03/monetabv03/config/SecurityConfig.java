@@ -23,15 +23,19 @@ public class SecurityConfig {
                         .requestMatchers("/images/**").permitAll() // Permettre l'accès aux ressources images
                         .requestMatchers("/js/**").permitAll() // Permettre l'accès aux ressources js
                         .requestMatchers("/reports").permitAll() // Autoriser l'accès au point de terminaison /reports
-                        .requestMatchers("/reports/generateExcel").permitAll() // Autoriser l'accès au point de terminaison /generateExcel
-                        .requestMatchers("/students").permitAll() // Autoriser l'accès au point de terminaison /students
-                        .requestMatchers("/SeConnecter").permitAll() // Autoriser l'accès à /SeConnecter
-                        .requestMatchers("/app-setting").permitAll() // Autoriser l'accès à /app-setting
-                        .requestMatchers("/login").permitAll() // Autoriser l'accès à la page de connexion
-                        .requestMatchers("/").permitAll() // Accès à la page d'accueil
-                        .requestMatchers("/public/**").permitAll() // Accès aux ressources publiques
+                         .requestMatchers("/public/**").permitAll() // Accès aux ressources publiques
+
+                                .requestMatchers("/schools/**").permitAll()
+                                .requestMatchers("/appSettings/**").permitAll()
+                                .requestMatchers("api/students/**").permitAll()
+                                .requestMatchers("api/teachers/**").permitAll()
+                                .requestMatchers("/login").anonymous()
+
+                                .requestMatchers("/").permitAll()
+                                .requestMatchers("/users/**").permitAll()
+                                .requestMatchers("/index").permitAll()
+
                         .requestMatchers("/students/**").permitAll() // Accès aux ressources publiques
-                        .requestMatchers("/api/students/**").permitAll() // Accès aux ressources publiques
                         .anyRequest().authenticated() // Toutes les autres demandes nécessitent une authentification
                 )
                 .formLogin(login -> login

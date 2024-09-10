@@ -93,15 +93,6 @@ public class MonEtabV03Application implements CommandLineRunner {
         userDTO.setPassword("Bak");
         userDTO.setCreatedDate(Instant.now());
 
-        Set<RoleUserDTO> roleUserDTOS = new HashSet<>();
-        RoleUserDTO adminRole = new RoleUserDTO();
-        adminRole.setIdRoleUser(roleAdmin.getIdRoleUser());
-        roleUserDTOS.add(adminRole);
 
-        userDTO.setRoleUser(roleUserDTOS);
-
-        // Enregistrement de l'utilisateur
-        UserDTO savedUser = userService.save(userDTO);
-        System.out.println("Utilisateur enregistré : " + savedUser);
     }
 }
