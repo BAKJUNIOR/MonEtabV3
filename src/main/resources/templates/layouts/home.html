@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+</head>
+<body>
+
+<div class="main-content container-fluid" layout:fragment="content">
+
+    <div class="main-content container-fluid">
+        <div class="page-title">
+            <h3>Tableau de bord</h3>
+            <p class="text-subtitle text-muted">
+                 tableau de bord pour afficher les statistiques de Ebab
+            </p>
+        </div>
+
+
+        <section class="section">
+            <!-- Première ligne avec deux cartes côte à côte -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class='card-heading p-1 pl-3'>Nombre d'éleves</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-12">
+                                    <div class="pl-3">
+                                        <h1 class='mt-5'>2158</h1>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-12">
+                                    <canvas id="bar1"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class='card-heading p-1 pl-3'>Nombre de professeurs</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-12">
+                                    <div class="pl-3">
+                                        <h1 class='mt-5'>1850</h1>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-12">
+                                    <canvas id="bar2"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deuxième ligne avec deux cartes côte à côte -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class='card-heading p-1 pl-3'>Nombre d'utilisateurs</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-12">
+                                    <div class="pl-3">
+                                        <h1 class='mt-5'>4865</h1>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-12">
+                                    <canvas id="bar3"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class='card-heading p-1 pl-3'>Eleve par genre</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-12">
+                                    <div class="pl-3">
+
+                                        <div class="legends">
+                                            <div class="legend d-flex flex-row align-items-center">
+                                                <div class='w-3 h-3 rounded-full bg-info mr-2'></div><span class='text-xs'>Homme </span>
+                                            </div>
+                                            <div class="legend d-flex flex-row align-items-center">
+                                                <div class='w-3 h-3 rounded-full bg-blue mr-2'></div><span class='text-xs'>Femme</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-12">
+                                    <canvas id="bar4"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+</div>
+</div>
+</body>
+</html>

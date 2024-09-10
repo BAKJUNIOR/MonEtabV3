@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/dashboard}">
+<head>
+    <meta charset="UTF-8">
+    <title>Users Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="main-content container-fluid" layout:fragment="content">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Utilisateur (<span th:text="${users.size()}"></span>) <i data-feather="user" width="50"></i></h3>
+                <p class="text-subtitle text-muted">
+                    Cette page affiche la liste des utilisateurs avec leurs informations essentielles, telles que le pseudo et la date de création.
+                </p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a th:href="@{/users/add}" class="d-flex align-items-center">
+                                <i data-feather="plus" class="icon-circle" width="35"></i>
+                                <button type="button" class="btn btn-primary btn-lg ml-2">Nouvel utilisateur</button>
+                            </a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="card">
+            <div class="card-header">
+
+            <!-- Formulaire de recherche -->
+            <form action="#" th:action="@{/users/search}" method="get" class="mt-3" style="width: 70% ; display: flex">
+                <input type="text" name="query" class="form-control" th:value="${date}" placeholder="Rechercher par (DATE DE CREATION) " required style="width: 50% " >
+                <select name="role"  class="form-control"  style="width: 10%">
+                    <th:block th:each="role : ${roles}" >
+                        <option th:value="${role.nameRole}" th:text="${role.nameRole}" ></option>
+                    </th:block>
+                </select>
+                <button class="btn btn-outline-primary" type="submit">Rechercher</button>
+            </form>
+            </div>
+
+            <div class="card-body">
+                <table class='table table-striped' id="tableUser">
+                    <thead>
+                    <tr>
+                    <tr>
+                        <th>Pseudo</th>
+                        <th>Date de creation</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user:${users}">
+                        <td th:text="${user.pseudo}"></td>
+                        <td th:text="${#dates.format(user.createdDate, 'dd/MM/yyyy')}"></td>
+<!--                        <td th:text="${user.address != null ? user.address.city : 'Non défini'}"></td>-->
+<!--                        <td th:text="${user.address != null ? user.address.street : 'Non défini'}"></td>-->
+<!--                        <td th:text="${user.address != null ? user.address.company : 'Non défini'}"></td>-->
+                        <td>
+                            <a class="btn btn-info btn-sm" data-bs-toggle="modal" th:data-bs-target="'#detailModal' + ${user.id_user}">Détail</a>
+                            <a th:href="@{/users/update/{id}(id=${user.id_user})}" class="btn btn-warning btn-sm">Modifier</a>
+                            <a th:href="@{/users/delete/{id}(id=${user.id_user})}" class="btn btn-danger btn-sm" onclick="confirmDelete(event, this)">Supprimer</a>
+
+                            <a th:href="@{/users/toggleStatus/{id}(id=${user.id_user})}" class="btn btn-secondary btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir changer le statut de cet utilisateur ?')">
+                                <span th:text="${user.active ? 'Désactiver' : 'Activer'}"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal pour les détails des utilisateurs -->
+    <th:block th:each="user : ${users}">
+        <div th:id="'detailModal' + ${user.id_user}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detailModalLabel">Détails de l'utilisateur</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Pseudo:</strong> <span th:text="${user.pseudo}"></span></p>
+                        <p><strong>Date de création:</strong> <span th:text="${#dates.format(user.createdDate, 'dd/MM/yyyy')}"></span></p>
+<!--                        <p><strong>Ville:</strong> <span th:text="${user.address != null ? user.address.city : 'Non défini'}"></span></p>-->
+<!--                        <p><strong>Rue:</strong> <span th:text="${user.address != null ? user.address.street : 'Non défini'}"></span></p>-->
+<!--                        <p><strong>Compagnie:</strong> <span th:text="${user.address != null ? user.address.company : 'Non défini'}"></span></p>-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <script>
+        function confirmDelete(event, button) {
+            event.preventDefault();
+            var row = button.closest('tr');
+            var name = row.querySelector('td').textContent;
+            if (confirm('Voulez-vous supprimer cet utilisateur ' + name + ' ?')) {
+                window.location.href = button.href;
+            } else {
+                console.log('Suppression annulée');
+            }
+        }
+    </script>
+
+    <!-- Assurez-vous d'inclure Bootstrap JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+<head>
+    <meta charset="UTF-8">
+    <title>Teachers page</title>
+
+    <style>
+        .alert {
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-content container-fluid" layout:fragment="content">
+
+
+    <div class="main-content container-fluid">
+        <div class="page-title">
+            <div class="row">
+
+                <!-- Afficher le message de succès s'il existe -->
+                <div th:if="${successMessage}" id="success-message" class="alert alert-success">
+                    <p th:text="${successMessage}" style="font-size: 20px; font-weight: bold"></p>
+                </div>
+
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Professeur
+<!--                        (<span th:text="${teachers.size}"></span>)-->
+
+                        <i> <img th:src="@{/images/professeur.png}" width="50" ></i>
+
+                    </h3>
+                    <p class="text-subtitle text-muted">
+                        Cette page affiche un tableau des professeurs avec leurs détails essentiels, tels que le nom, le prénom, la matière enseignée, le statut de disponibilité, l'âge, le téléphone et la ville.
+                    </p>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/teachers/add}" class="d-flex align-items-center">
+                                    <i data-feather="plus" class="icon-circle" width="35"></i>
+                                    <button type="submit" class="btn btn-primary btn-lg ml-2">Nouvel professeur</button>
+                                </a>
+                            </li>
+                        </ol>
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    Simple Datatable
+
+                    <!-- Formulaire de recherche -->
+                    <form  th:action="@{/teachers/search}" method="get" class="mt-3" style="width: 70% ; display: flex">
+                        <input type="text" name="query" class="form-control" th:value="${query}" placeholder="Rechercher un teacher... NOM , GENRE , MATRICULE " required style="width: 50% " >
+                        <select name="gender"  class="form-control" th:value="${gender}" style="width: 10%">
+                            <option value="MAN" th:if="${gender == 'MAN'} ? 'selected':''">HOMME</option>
+                            <option value="WOMAN" th:if="${gender == 'WOMAN'} ? 'selected':''">FEMME</option>
+                            <option value="OTHER" th:if="${gender == 'OTHER'} ? 'selected':''">AUTRE</option>
+                        </select>
+                        <button class="btn btn-outline-primary" type="submit">Rechercher</button>
+                    </form>
+
+
+                </div>
+                <div class="card-body">
+                    <table class='table table-striped' id="tableTeacher">
+                        <thead>
+                        <tr>
+                            <th>FirstName</th>
+                            <th>LastName</th>
+                            <th>Available</th>
+                            <th>Speciality</th>
+                            <th>gender</th>
+                            <th>Birthday</th>
+                            <th>Phone</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="teacher:${teachers}">
+                            <td th:text="${teacher.firstName}"></td>
+                            <td th:text="${teacher.lastName}"></td>
+                            <td  th:text="${teacher.available}"></td>
+                            <td th:text="${teacher.specialty}"></td>
+                            <td th:text="${teacher.gender}"></td>
+                            <td th:text="${#dates.format(teacher.dateOfBirth, 'dd-MM-yyyy')}"></td>
+                            <td th:text="${teacher.numbers}"></td>
+                            <td>
+                                <a class="btn btn-info btn-sm" data-bs-toggle="modal" th:data-bs-target="'#detailModal' + ${teacher.id_person}">Détail</a>
+                                <a th:href="@{/teachers/update/{id}(id=${teacher.id_person})}" class="btn btn-warning btn-sm">Modifier</a>
+                                <a th:href="@{/teachers/delete/{id}(id=${teacher.id_person})}" class="btn btn-danger btn-sm" onclick="confirmDelete(event, this)">Supprimer</a>                            </td>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal pour les détails des professeurs -->
+        <th:block th:each="teacher : ${teachers}">
+            <div th:id="'detailModal' + ${teacher.id_person}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="detailModalLabel">Détails de l'élève</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Nom:</strong> <span th:text="${teacher.firstName}"></span></p>
+                            <p><strong>Prénom:</strong> <span th:text="${teacher.lastName}"></span></p>
+                            <p><strong>Telephone:</strong> <span th:text="${teacher.numbers}"></span></p>
+                            <p><strong>Ville:</strong> <span th:text="${teacher.address != null ? teacher.address.city : 'Non défini'}"></span></p>
+                            <p><strong>Rue:</strong> <span th:text="${teacher.address != null ? teacher.address.street : 'Non défini'}"></span></p>
+                            <p><strong>Compagnie:</strong> <span th:text="${teacher.address != null ? teacher.address.country : 'Non défini'}"></span></p>
+                            <p><strong>Genre:</strong> <span th:text="${teacher.gender}"></span></p>
+                            <p><strong>Spécialité:</strong> <span th:text="${teacher.specialty}"></span></p>
+                            <p><strong>available:</strong> <span th:text="${teacher.available}"></span></p>
+                            <p><strong>Date de Naissance:</strong> <span th:text="${#dates.format(teacher.dateOfBirth, 'dd-MM-yyyy')}"></span></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+
+        <script>
+            function confirmDelete(event, button) {
+                event.preventDefault();
+                var row = button.closest('tr');
+                var name = row.querySelector('td').textContent;
+                if (confirm('Voulez-vous supprimer cet teacher ' + name + ' ?')) {
+                    window.location.href = button.href;
+                } else {
+                    console.log('Suppression annulée');
+                }
+            }
+        </script>
+
+        <!-- JavaScript pour masquer le message après un certain temps -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var successMessage = document.getElementById("success-message");
+                if (successMessage) {
+                    // Masquer le message après 5 secondes (5000 millisecondes)
+                    setTimeout(function() {
+                        successMessage.style.opacity = 0;
+                        setTimeout(function() {
+                            successMessage.style.display = 'none';
+                        }, 500); // Attendre que l'animation de fondu soit terminée
+                    }, 3000);
+                }
+            });
+        </script>
+
+        <!-- Assurez-vous d'inclure Bootstrap JavaScript -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/dashboard}">
+<head>
+    <meta charset="UTF-8">
+    <title>Students Page</title>
+</head>
+<body>
+
+<div class="main-content container-fluid" layout:fragment="content">
+
+    <div class="main-content container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-4 order-md-1 order-last">
+                    <h3 th:text="${student.id_person == null} ? 'Ajouter un élève' : 'Modifier un élève'"></h3>
+                    <p class="text-subtitle text-muted">Remplissez les informations ci-dessous pour ajouter ou modifier un élève. Veuillez vérifier toutes les données avant de les soumettre.</p>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/students}">
+                                    <i data-feather="arrow-left" width="80" th:alt="retour"></i>
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <section id="multiple-column-form">
+            <div class="row match-height">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Ajouter un élève</h4>
+                        </div>
+
+                        <div class="card-content">
+                            <div class="card-body">
+
+                                <form th:action="@{/students/save}" th:object="${student}" method="post">
+
+                                    <input th:field="*{id_person}" type="hidden">
+
+                                    <div class="row">
+                                        <!-- Champ pour le prénom -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="prenom">Prénom</label>
+                                                <input type="text" id="prenom" class="form-control" th:field="*{firstName}" placeholder="Prénom" required>
+<!--                                                <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></div>-->
+                                            </div>
+                                        </div>
+
+                                        <!-- Champ pour le nom -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="nom">Nom</label>
+                                                <input type="text" id="nom" class="form-control" th:field="*{lastName}" placeholder="Nom" required>
+<!--                                                <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></div>-->
+                                            </div>
+                                        </div>
+
+                                        <!-- Champ pour le choix du genre (liste déroulante) -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="gender">Genre</label>
+                                                <select id="gender" th:field="*{gender}" class="form-control" required>
+                                                    <option value="" disabled selected>Choisir...</option>
+                                                    <option th:each="g : ${gender}" th:value="${g}" th:text="${g.name()}"></option>
+                                                </select>
+<!--                                                <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="text-danger"></div>-->
+                                            </div>
+                                        </div>
+
+                                        <!-- Champ pour la date de naissance -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="date-naissance">Date de Naissance</label>
+                                                <input type="date" id="date-naissance" class="form-control" th:field="*{dateOfBirth}" required>
+<!--                                                <div th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" class="text-danger"></div>-->
+                                            </div>
+                                        </div>
+
+
+
+                                        <!-- Champ pour le téléphone -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="telephone">Téléphone</label>
+                                                <input type="text" id="telephone" class="form-control" th:field="*{numbers}" placeholder="Téléphone" required>
+<!--                                                <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger"></div>-->
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <!-- Champ pour l'adresse -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="street">Rue</label>
+                                                <input type="text" id="street" class="form-control" th:field="*{address.street}" placeholder="Rue" required>
+<!--                                                <div th:if="${#fields.hasErrors('address.street')}" th:errors="*{address.street}" class="text-danger"></div>-->
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="country">Pays</label>
+                                                <input type="text" id="country" class="form-control" th:field="*{address.country}" placeholder="Pays" required>
+<!--                                                <div th:if="${#fields.hasErrors('address.country')}" th:errors="*{address.country}" class="text-danger"></div>-->
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="city">Ville</label>
+                                                <input type="text" id="city" class="form-control" th:field="*{address.city}" placeholder="Ville" required>
+<!--                                                <div th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}" class="text-danger"></div>-->
+                                            </div>
+                                        </div>
+
+                                        <!-- Champ pour le matricule -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="matricule">Matricule</label>
+                                                <input type="text" id="matricule" class="form-control" th:field="*{matricule}" placeholder="Matricule" required>
+                                                <!--                                                <div th:if="${#fields.hasErrors('matricule')}" th:errors="*{matricule}" class="text-danger"></div>-->
+                                            </div>
+                                        </div>
+                                        <!-- Champ pour le téléphone du parent -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="telephoneParent">Téléphone Parent</label>
+                                                <input type="text" id="telephoneParent" class="form-control" th:field="*{phoneNumberParent}" placeholder="Téléphone Parent" required>
+                                                <!--                                                <div th:if="${#fields.hasErrors('phoneNumberFather')}" th:errors="*{phoneNumberFather}" class="text-danger"></div>-->
+                                            </div>
+                                        </div>
+
+                                        <!-- Boutons d'action -->
+                                        <div class="col-12 d-flex justify-content-center mt-4">
+                                            <button type="reset" class="btn btn-light-secondary mr-4" style="width: 150px;">Annuler</button>
+                                            <button type="submit" class="btn btn-primary ml-4" style="width: 150px;">Enregistrer</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+</body>
+</html>

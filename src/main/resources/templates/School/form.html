@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+
+    <link rel="stylesheet" th:href="@{/css/Chart.min.css}">
+
+    <link rel="stylesheet" th:href="@{/css/perfect-scrollbar.css}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="shortcut icon" th:href="@{/images/logo.png}" type="image/x-icon">
+</head>
+<meta charset="UTF-8">
+<title>Configurer les Paramètres de l'Application</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    /* Style pour centrer la section */
+    #multiple-column-form {
+        max-width: 5000px; /* Largeur maximale */
+        margin: 0 auto;   /* Centrer horizontalement */
+        padding: 100px;
+        align-content: center/* Espacement intérieur */
+    }
+</style>
+</head>
+<body>
+
+
+
+<section id="multiple-column-form">
+    <div class="row match-height">
+        <div class="col-10">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title text-center" th:text="${schools.id_school == null} ? 'Ajouter les parametres École' : 'Modifier les parametres École'" style="font-weight: bold ; font-size: 35px"></h4>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-body">
+                        <form th:action="@{/schools/postSchools}" method="post" class="w-75 py-5" th:object="${schools}"   enctype="multipart/form-data">
+
+                            <input type="hidden" th:field="*{id_school}"/>
+
+                            <div class="row">
+                                <div class="col-md-12 col-12">
+                                    <div class="form-group">
+                                        <label for="name">Nom de l'école</label>
+                                        <input type="text" id="name" th:field="*{nameSchool}" class="form-control" placeholder="Nom de l'École" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-12">
+                                    <div class="form-group">
+                                        <label for="urlLogo">Logo</label>
+                                        <input type="file" id="urlLogo"  class="form-control" th:field="*{file}" name="urlLogo"  placeholder="url logo school" >
+                                    </div>
+                                </div>
+
+
+
+                            <div class="d-flex justify-content-center mt-4">
+                                <button type="submit" class="btn btn-primary ml-4" style="width: 150px;">Suivant</button>
+                            </div>
+
+                            </div>
+                        </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

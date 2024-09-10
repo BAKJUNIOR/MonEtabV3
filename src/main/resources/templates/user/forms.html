@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+<head>
+    <meta charset="UTF-8">
+    <title>Users page</title>
+</head>
+<body>
+
+<div class="main-content container-fluid" layout:fragment="content">
+
+    <div class="main-content container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h4 th:text="${user.id_user == null} ? 'Ajouter un utilisateur' : 'Modier un utilisateur'"></h4>
+
+                <p class="text-subtitle text-muted">Remplissez les informations ci-dessous pour enregistrer l'utilisateur. Veuillez vérifier toutes les données avant de les soumettre</p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a th:href="@{/users}">
+                                <i data-feather="arrow-left" width="80" th:alt="retour"></i>
+                            </a>
+                        </li>
+                    </ol>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section id="multiple-column-form">
+        <div class="row match-height">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 th:text="${user.id_user == null} ? 'Ajouter un utilisateur' : 'Modier un utilisateur'"></h4>
+
+                    </div>
+
+                    <div class="card-content">
+                        <div class="card-body">
+
+
+                            <form th:action="@{/users/save}"  th:object="${user}" method="post">
+
+                                <input th:field="*{id_user}" hidden type="text">
+
+
+                                <div class="row">
+                                    <!-- Champ Pseudo -->
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <label for="username">Pseudo</label>
+                                            <input type="text" id="username" th:field="*{pseudo}" class="form-control" placeholder="Pseudo" name="username-column">
+                                            <div th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}" class="text-danger"></div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Champ Mot de passe -->
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <label for="password">Mot de passe</label>
+                                            <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Mot de passe" name="password-column">
+                                            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary mr-1 mb-1">Soumettre</button>
+                                        <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Réinitialiser</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </div>
+</div>
+</div>
+</body>
+</html>

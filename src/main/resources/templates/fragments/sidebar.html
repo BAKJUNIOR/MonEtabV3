@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="sidebar" class='active' th:fragment="sidebar"><!--sidebar-->
+    <div class="sidebar-wrapper active">
+        <div class="sidebar-header">
+            <img th:src="${schoolName?.urlLogo ?: 'logo.png'}" alt="" srcset="" width="100px" style="width: 150px; height: auto;display: block;margin: 0 auto; /">
+        </div>
+        <div class="sidebar-menu">
+            <ul class="menu">
+
+
+                 <hr style="width: 80%; border: 1px solid #ccc; margin: 20px auto 10px">
+
+
+                <li class="sidebar-item active ">
+                    <a th:href="@{/home}" class='sidebar-link'>
+                        <i data-feather="grid" width="25" ></i>
+                        <span>Dashboard</span>
+                    </a>
+
+                </li>
+
+
+
+                <li class="sidebar-item  ">
+                    <a th:href="@{/students}" class='sidebar-link'>
+                        <i> <img th:src="@{/images/eleves.png}" width="25" ></i>
+                        <span>Students</span>
+                    </a>
+
+                </li>
+
+
+                <li class="sidebar-item  ">
+                    <a th:href="@{/teachers}" class='sidebar-link'>
+                        <i> <img th:src="@{/images/professeur.png}" width="25" ></i>
+                        <span>Teachers</span>
+                    </a>
+
+                </li>
+
+
+                <li class="sidebar-item  ">
+                    <a th:href="@{/users}" class='sidebar-link'>
+                        <i data-feather="user" width="25"></i>
+                        <span>Users</span>
+                    </a>
+
+                </li>
+
+                <li class="sidebar-item  ">
+
+
+                    <a th:href="@{/reports}" class='sidebar-link'>
+                        <i> <img th:src="@{/images/rapport.png}" width="25" ></i>
+                        <span>Rapport</span>
+                    </a>
+
+                </li>
+
+                <li class="sidebar-item">
+                    <a  class='sidebar-link' th:href="@{/appSettings/update}">
+                        <i><img th:src="@{/images/Settings.png}" width="25"></i>
+                        <span>Application Settings</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a  class='sidebar-link' th:href="@{/schools/update}">
+                        <i><img th:src="@{/images/ecole.png}" width="25"></i>
+                        <span>School Settings</span>
+                    </a>
+                </li>
+
+
+
+                <div style="padding-top: 100px">
+                    <hr style="width: 80%; border: 1px solid #ccc; margin: 20px auto 10px">
+
+                </div>
+
+
+
+                <li class="sidebar-item  "style="padding-top: 10px">
+                    <a th:href="@{/logout}" class='sidebar-link'>
+                        <i data-feather="log-out" width="20" ></i>
+                        <span>Logout</span>
+                    </a>
+
+                </li>
+
+            </ul>
+        </div>
+        <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+    </div>
+</div>
+</body>
+</html>

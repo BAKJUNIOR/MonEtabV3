@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+
+    <link rel="stylesheet" th:href="@{/css/Chart.min.css}">
+
+    <link rel="stylesheet" th:href="@{/css/perfect-scrollbar.css}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="shortcut icon" th:href="@{/images/logo.png}" type="image/x-icon">
+  </head>
+  <meta charset="UTF-8">
+  <title>Configurer les Paramètres de l'Application</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Style pour centrer la section */
+    #multiple-column-form {
+      max-width: 5000px; /* Largeur maximale */
+      margin: 0 auto;   /* Centrer horizontalement */
+      padding: 100px;    /* Espacement intérieur */
+    }
+  </style>
+</head>
+<body>
+
+
+
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+              <h4 class="card-title text-center" th:text="${appSetting.id_appsetting == null} ? 'Configurer les Paramètres de l\'Application' : 'Modifier les Paramètres de l\'Application'" style="font-weight: bold ; font-size: 35px"></h4>
+          </div>
+
+          <div class="card-content">
+            <div class="card-body">
+
+              <form th:action="@{/appSettings/postAppSettings}" th:object="${appSetting}" method="post">
+
+
+                  <input type="hidden" th:field="*{id_appsetting}"/> <!-- Champ caché pour l'ID -->
+
+
+                <div class="row">
+                  <!-- Champ pour le serveur SMTP -->
+                  <div class="col-md-12 col-12">
+                    <div class="form-group">
+                      <label for="smtpServer">Serveur SMTP</label>
+                        <input type="text" id="smtpServer" class="form-control" th:field="*{smtpServer}" placeholder="Serveur SMTP" required>
+                      <!--                    <div th:if="${#fields.hasErrors('smtpServer')}" th:errors="*{smtpServer}" class="text-danger"></div>-->
+                    </div>
+                  </div>
+
+                  <!-- Champ pour le port SMTP -->
+                  <div class="col-md-12 col-12">
+                    <div class="form-group">
+                      <label for="smtpPort">Port SMTP</label>
+                      <input type="number" id="smtpPort" class="form-control"  th:field="*{smtpPort}" placeholder="Port SMTP" required>
+                      <!--                    <div th:if="${#fields.hasErrors('smtpPort')}" th:errors="*{smtpPort}" class="text-danger"></div>-->
+                    </div>
+                  </div>
+
+                  <!-- Champ pour le nom d'utilisateur SMTP -->
+                  <div class="col-md-12 col-12">
+                    <div class="form-group">
+                      <label for="smtpUsername">Nom d'utilisateur SMTP</label>
+                      <input type="text" id="smtpUsername" class="form-control" th:field="*{smtpUsername}"  placeholder="Nom d'utilisateur SMTP" required>
+                      <!--                    <div th:if="${#fields.hasErrors('smtpUsername')}" th:errors="*{smtpUsername}" class="text-danger"></div>-->
+                    </div>
+                  </div>
+
+                  <!-- Champ pour le mot de passe SMTP -->
+                  <div class="col-md-12 col-12">
+                    <div class="form-group">
+                      <label for="smtpPassword">Mot de passe SMTP</label>
+                      <input type="password" id="smtpPassword" class="form-control" th:field="*{smtpPassword}"  placeholder="Mot de passe SMTP" required>
+                      <!--                    <div th:if="${#fields.hasErrors('smtpPassword')}" th:errors="*{smtpPassword}" class="text-danger"></div>-->
+                    </div>
+                  </div>
+
+                  <!-- Boutons d'action -->
+                  <div class="col-12 d-flex justify-content-center mt-4">
+<!--                    <button type="reset" class="btn btn-light-secondary mr-4" style="width: 150px;">Annuler</button>-->
+                    <button type="submit" class="btn btn-primary ml-4" style="width: 40%;font-size: 18px">Enregistrer</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

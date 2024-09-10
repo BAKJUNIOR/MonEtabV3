@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+<head>
+  <meta charset="UTF-8">
+  <title>Rapport Page</title>
+</head>
+<body>
+
+<div class="main-content container-fluid" layout:fragment="content">
+
+  <div class="main-content container-fluid">
+    <div class="page-title">
+      <div class="row">
+        <div class="col-12 col-md-6 order-md-1 order-last">
+          <h3>Rapport</h3>
+          <p class="text-subtitle text-muted">
+            Sélectionnez une opération et générez un rapport dans le format souhaité.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <section id="multiple-column-form">
+      <div class="row match-height">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">Obtenir un rapport
+                <i><img th:src="@{/images/rapport.png}" width="50"></i>
+              </h4>
+            </div>
+
+            <div class="card-content">
+              <div class="card-body">
+                <form method="get">
+
+                  <div class="row">
+                    <div class="col-md-12 col-12">
+                      <div class="form-group">
+                        <label for="operation-select">Sélectionnez une opération</label>
+                        <select id="operation-select" class="form-control" name="operation" required>
+                          <option value="" disabled selected>Sélectionnez une opération</option>
+                          <option value="students">Liste des élèves</option>
+                          <option value="teachers">Liste des professeurs</option>
+                          <option value="users">Liste des utilisateurs</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- Boutons pour générer PDF et Excel -->
+                    <div class="col-12 d-flex justify-content-center mt-4" style="padding-left: 5px">
+                      <button type="submit" formaction="/reports/generatePdf" class="btn btn-primary" style="background-color: #772a2a; margin-right: 20px;">
+                        <i class="fas fa-file-pdf mr-2"></i> Générer format PDF
+                      </button>
+                      <div style="border-left: 2px solid #ccc; height: 40px; margin-right: 20px;"></div>
+                      <button type="submit" formaction="/reports/generateExcel" class="btn btn-success">
+                        <i class="fas fa-file-excel mr-2"></i> Générer format Excel
+                      </button>
+                    </div>
+
+                  </div>
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</body>
+</html>

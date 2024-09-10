@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+<head>
+    <meta charset="UTF-8">
+    <title>Students page</title>
+
+    <style>
+        .alert {
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-content container-fluid" layout:fragment="content">
+
+    <div class="main-content container-fluid">
+        <div class="page-title">
+
+            <div class="row">
+
+                <!-- Afficher le message de succès s'il existe -->
+                <div th:if="${successMessage}" id="success-message" class="alert alert-success">
+                    <p th:text="${successMessage}" style="font-size: 20px; font-weight: bold"></p>
+                </div>
+
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Elève
+<!--                        (<span th:text="${students.size}"></span>)-->
+                        <i><img th:src="@{/images/eleves.png}" width="50"></i>
+                    </h3>
+                    <p class="text-subtitle text-muted">
+                        Cette page présente un tableau des élèves avec leurs informations détaillées, telles que le nom, le prénom, le genre, la classe, la matière, l'âge, le téléphone et la ville.
+                    </p>
+
+
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/students/add}" class="d-flex align-items-center">
+                                    <i data-feather="plus" class="icon-circle" width="35"></i>
+                                    <button type="submit" class="btn btn-primary btn-lg ml-2">Nouvel élève</button>
+                                </a>
+                            </li>
+                        </ol>
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+
+                    <!-- Formulaire de recherche -->
+                    <form action="#" th:action="@{/students/search}" method="get" class="mt-3" style="width: 70% ; display: flex">
+                        <input type="text" name="query" class="form-control" th:value="${query}" placeholder="Rechercher un élève... NOM , GENRE , MATRICULE " required style="width: 50% " >
+                        <select name="gender"  class="form-control" th:value="${gender}" style="width: 10%">
+                            <option value="MAN" th:if="${gender == 'MAN'} ? 'selected':''">HOMME</option>
+                            <option value="WOMAN" th:if="${gender == 'WOMAN'} ? 'selected':''">FEMME</option>
+                            <option value="OTHER" th:if="${gender == 'OTHER'} ? 'selected':''">AUTRE</option>
+                        </select>
+                        <button class="btn btn-outline-primary" type="submit">Rechercher</button>
+                    </form>
+
+                </div>
+                <div class="card-body">
+                    <table class='table table-striped' id="table1">
+                        <thead>
+                        <tr>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th>Téléphone</th>
+                            <th>Téléphone Parent</th>
+                            <th>Genre</th>
+                            <th>Date de Naissance</th>
+                            <th>Matricule</th>
+                            <th>Adresse</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="eleve : ${students}">
+                            <td th:text="${eleve.firstName}"></td>
+                            <td th:text="${eleve.lastName}"></td>
+                            <td th:text="${eleve.numbers}"></td>
+                            <td th:text="${eleve.phoneNumberParent}"></td>
+                            <td th:text="${eleve.gender}"></td>
+                            <td th:text="${#dates.format(eleve.dateOfBirth, 'dd-MM-yyyy')}"></td>
+                            <td th:text="${eleve.matricule}"></td>
+                            <td th:text="${eleve.address != null ? eleve.address.city + ' / ' + eleve.address.country : 'Non défini'}"></td>
+                            <td>
+                                <button class="btn btn-info btn-sm" data-bs-toggle="modal" th:data-bs-target="'#detailModal' + ${eleve.id_person}">Détails</button>
+                                <a th:href="@{/students/update/{id}(id=${eleve.id_person})}" class="btn btn-warning btn-sm">Modifier</a>
+                                <a th:href="@{/students/delete/{id}(id=${eleve.id_person})}" class="btn btn-danger btn-sm" onclick="confirmDelete(event, this)">Supprimer</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal pour les détails des élèves -->
+        <th:block th:each="eleve : ${students}">
+            <div th:id="'detailModal' + ${eleve.id_person}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="detailModalLabel">Détails de l'Élève</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Prénom:</strong> <span th:text="${eleve.firstName}"></span></p>
+                            <p><strong>Nom:</strong> <span th:text="${eleve.lastName}"></span></p>
+                            <p><strong>Téléphone:</strong> <span th:text="${eleve.numbers}"></span></p>
+                            <p><strong>Téléphone Parent:</strong> <span th:text="${eleve.dateOfBirth}"></span></p>
+                            <p><strong>Genre:</strong> <span th:text="${eleve.gender}"></span></p>
+                            <p><strong>Date de Naissance:</strong> <span th:text="${#dates.format(eleve.dateOfBirth, 'dd-MM-yyyy')}"></span></p>
+                            <p><strong>Matricule:</strong> <span th:text="${eleve.matricule}"></span></p>
+                            <p><strong>Adresse street:</strong> <span th:text="${eleve.address != null ? eleve.address.street : 'Non défini'}"></span></p>
+                            <p><strong>Adresse city:</strong> <span th:text="${eleve.address != null ? eleve.address.city : 'Non défini'}"></span></p>
+                            <p><strong>Adresse country:</strong> <span th:text="${eleve.address != null ? eleve.address.country : 'Non défini'}"></span></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+
+
+        <script>
+            function confirmDelete(event, button) {
+                event.preventDefault();
+                var row = button.closest('tr');
+                var name = row.querySelector('td').textContent;
+                if (confirm('Voulez-vous supprimer cet élève ' + name + ' ?')) {
+                    window.location.href = button.href;
+                } else {
+                    console.log('Suppression annulée');
+                }
+            }
+        </script>
+
+        <!-- JavaScript pour masquer le message après un certain temps -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var successMessage = document.getElementById("success-message");
+                if (successMessage) {
+                    // Masquer le message après 5 secondes (5000 millisecondes)
+                    setTimeout(function() {
+                        successMessage.style.opacity = 0;
+                        setTimeout(function() {
+                            successMessage.style.display = 'none';
+                        }, 500); // Attendre que l'animation de fondu soit terminée
+                    }, 3000);
+                }
+            });
+        </script>
+
+        <!-- Assurez-vous d'inclure Bootstrap JavaScript -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    </div>
+
+</div>
+</body>
+</html>
