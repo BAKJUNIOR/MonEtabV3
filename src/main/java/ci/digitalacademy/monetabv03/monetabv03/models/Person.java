@@ -1,6 +1,8 @@
 package ci.digitalacademy.monetabv03.monetabv03.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.io.Serializable;
@@ -23,22 +25,29 @@ public abstract class Person implements Serializable {
     @Column(name = "id_personne")
     private Long id_person;
 
+    @NotBlank(message = "Le prénom est obligatoire")
     @Column(name = "firstName", nullable = false)
     private String firstName;
 
-    @Column(name = "lastName" , nullable = false)
+    @NotBlank(message = "Le nom de famille est obligatoire")
+    @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @Column(name = "numbers" )
+    @Column(name = "numbers")
     private String numbers;
 
-    @Column(name = "dateOfBirth" )
+    @NotNull(message = "La date de naissance est obligatoire")
+    @Column(name = "dateOfBirth")
     private Date dateOfBirth;
 
     @Column(name = "url_picture")
     private String urlPicture;
 
+    @Column(unique = true)
+    private String slug;
+
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "Le genre est obligatoire")
     private Gender gender;
 
     @OneToOne(cascade = CascadeType.ALL)

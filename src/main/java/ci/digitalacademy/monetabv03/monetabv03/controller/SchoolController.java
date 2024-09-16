@@ -41,18 +41,7 @@ public class SchoolController {
         return "School/form";
     }
 
-//    @PostMapping("/postSchools")
-//    public String saveSchool(@ModelAttribute RegistrationSchoolDTO registrationSchoolDTO) throws IOException {
-//        String upload = fileStorageService.upload(registrationSchoolDTO.getFile());
-//        AppSettingDTO settingDTO = appSettingService.findAll().stream().findFirst().orElse(null);
-//        registrationSchoolDTO.setAppSetting(settingDTO);
-//        registrationSchoolDTO.setUrlLogo(upload);
-//        SchoolDTO savedSchool = schoolService.save(registrationSchoolDTO);
-//
-//        // Créer les utilisateurs associés à l'école
-//        SaveUser(savedSchool);
-//        return "redirect:/";
-//    }
+
 
 
 
@@ -130,7 +119,7 @@ public class SchoolController {
         user1.setCreatedDate(Instant.now());
         String password1 = passwordEncoder.encode("bak123@");
         user1.setPassword(password1);
-        user1.setRoleUser(roleUserSet3);
+        user1.setRoleUser(roleUserSet2);
 
 
         UserDTO user2 = new UserDTO();
@@ -149,7 +138,7 @@ public class SchoolController {
 
         List<UserDTO> userList = List.of(user1, user2, user3);
 
-        // Initialisation les utilisateurs avec les rôles et l'école
+       //  Initialisation les utilisateurs avec les rôles et l'école
         appService.initUser(roleUserDTOS, school, userList);
 
 

@@ -6,9 +6,13 @@ import ci.digitalacademy.monetabv03.monetabv03.models.Teacher;
 import ci.digitalacademy.monetabv03.monetabv03.repositories.StudentRepository;
 import ci.digitalacademy.monetabv03.monetabv03.repositories.TeacherRepository;
 import ci.digitalacademy.monetabv03.monetabv03.service.TeacherService;
+import ci.digitalacademy.monetabv03.monetabv03.service.dto.StudentDTO;
 import ci.digitalacademy.monetabv03.monetabv03.service.dto.TeacherDTO;
 import ci.digitalacademy.monetabv03.monetabv03.service.mapper.StudentMapper;
 import ci.digitalacademy.monetabv03.monetabv03.service.mapper.TeacherMapper;
+import ci.digitalacademy.monetabv03.monetabv03.service.mapping.StudentMapping;
+import ci.digitalacademy.monetabv03.monetabv03.service.mapping.TeacherMapping;
+import ci.digitalacademy.monetabv03.monetabv03.utils.SlugifyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +27,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public TeacherDTO save(TeacherDTO teacherDTO) {
         Teacher teacher = teacherMapper.DtoToEntity(teacherDTO);
+        teacher.setSlug(SlugifyUtils.generate(teacher.getSpecialty()));
         return teacherMapper.ToDto(teacherRepository.save(teacher));
     }
 
@@ -37,6 +42,20 @@ public class TeacherServiceImpl implements TeacherService {
             existingTeacher.setGender(teacherDTO.getGender());
             return save(teacherDTO);
         }).orElseThrow(() ->new IllegalArgumentException());
+    }
+
+    @Override
+    public TeacherDTO partialUpdate(TeacherDTO teacherDTO, Long id) {
+        return teacherRepository.findById(id).map(teacher -> {
+            TeacherMapping.partialUpdate(teacher,teacherDTO);
+            return teacher;
+        }).map(teacherRepository::save).map(teacherMapper::ToDto).orElse(null);
+    }
+
+    @Override
+    public TeacherDTO update(TeacherDTO teacherDTO, Long id) {
+        teacherDTO.setId_person(id);
+        return update(teacherDTO);
     }
 
     @Override
@@ -58,6 +77,8 @@ public class TeacherServiceImpl implements TeacherService {
         teacherRepository.deleteById(id);
 
     }
+
+
 
     @Override
     public List<TeacherDTO> findByLastNameOrSpecialtyAndGender(String query, String gender) {

@@ -2,7 +2,6 @@ package ci.digitalacademy.monetabv03.monetabv03;
 
 import ci.digitalacademy.monetabv03.monetabv03.models.RoleUser;
 import ci.digitalacademy.monetabv03.monetabv03.service.AppService;
-import ci.digitalacademy.monetabv03.monetabv03.service.UserService;
 import ci.digitalacademy.monetabv03.monetabv03.service.dto.RoleUserDTO;
 import ci.digitalacademy.monetabv03.monetabv03.service.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class MonEtabV03Application implements CommandLineRunner {
     private final BCryptPasswordEncoder passwordEncoder;
-    private final UserService userService;
+//    private final UserService userService;
     private final AppService appService;
 
 

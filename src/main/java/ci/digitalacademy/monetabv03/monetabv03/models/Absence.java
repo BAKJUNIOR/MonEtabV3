@@ -24,7 +24,10 @@ public class Absence {
     private Date dateAbsence;
 
     @Column(name = "number_absence" , nullable = false)
-    private int numberAbsence;
+    private Integer numberAbsence;
+
+    @Column(name = "slug" , unique = true)
+    private String slug;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_student")

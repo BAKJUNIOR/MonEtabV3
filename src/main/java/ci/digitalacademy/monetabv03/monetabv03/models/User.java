@@ -32,7 +32,11 @@ public class User {
     @Column(name = "is_active")
     private Boolean active = true;
 
-    @Column(name = "creation_date" , nullable = false)
+    @Column(unique = true)
+    private String slug ;
+
+
+    @Column(name = "created_date")
     private Instant createdDate;
 
     @ManyToMany(fetch = FetchType.EAGER)

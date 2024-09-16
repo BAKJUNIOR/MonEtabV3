@@ -1,6 +1,7 @@
 package ci.digitalacademy.monetabv03.monetabv03.repositories;
 
 import ci.digitalacademy.monetabv03.monetabv03.models.User;
+import ci.digitalacademy.monetabv03.monetabv03.service.dto.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.Instant;

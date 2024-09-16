@@ -13,7 +13,7 @@
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <h4 th:text="${user.id_user == null} ? 'Ajouter un utilisateur' : 'Modier un utilisateur'"></h4>
+                <h4 th:text="${useradd.id_user == null} ? 'Ajouter un utilisateur' : 'Modier un utilisateur'"></h4>
 
                 <p class="text-subtitle text-muted">Remplissez les informations ci-dessous pour enregistrer l'utilisateur. Veuillez vérifier toutes les données avant de les soumettre</p>
             </div>
@@ -36,7 +36,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 th:text="${user.id_user == null} ? 'Ajouter un utilisateur' : 'Modier un utilisateur'"></h4>
+                        <h4 th:text="${useradd.roleUser == null} ? 'Ajouter un utilisateur' : 'Modier un utilisateur'"></h4>
 
                     </div>
 
@@ -44,44 +44,50 @@
                         <div class="card-body">
 
 
-                            <form th:action="@{/users/save}"  th:object="${user}" method="post">
+                            <form th:action="@{/users/save}" th:object="${useradd}" method="post">
 
                                 <input th:field="*{id_user}" hidden type="text">
-
 
                                 <div class="row">
                                     <!-- Champ Pseudo -->
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="username">Pseudo</label>
-                                            <input type="text" id="username" th:field="*{pseudo}" class="form-control" placeholder="Pseudo" name="username-column">
-                                            <div th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}" class="text-danger"></div>
-
+                                            <input type="text" id="username" th:field="*{pseudo}" class="form-control" placeholder="Pseudo" required>
                                         </div>
                                     </div>
+
                                     <!-- Champ Mot de passe -->
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="password">Mot de passe</label>
-                                            <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Mot de passe" name="password-column">
-                                            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div>
-
+                                            <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Mot de passe" required>
                                         </div>
                                     </div>
 
+                                    <!-- Sélecteur de Rôle -->
                                     <div class="col-md-12 col-12">
-                                    <select   class="form-control" required th:field="*{roleName} ">
-                                        <option th:each="rolee : ${roles}"
-                                                th:value="${rolee.idRoleUser}"
-                                                th:text="${rolee.nameRole}">
-                                        </option>
-                                    </select>
+                                        <div class="form-group">
+                                            <label for="role">Rôle</label>
+                                            <select class="form-control" required th:field="*{roleName}" id="role">
+                                                <option value="" disabled selected>-- Sélectionnez un rôle --</option>
+                                                <option th:each="role : ${roles}"
+                                                        th:value="${role.idRoleUser}"
+                                                        th:text="${role.nameRole}">
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary mr-1 mb-1">Soumettre</button>
                                         <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Réinitialiser</button>
                                     </div>
+                                </div>
+
+                                <!-- Affichage des erreurs -->
+                                <div th:if="${error}" class="alert alert-danger">
+                                    <p th:text="${error}"></p>
                                 </div>
                             </form>
                         </div>

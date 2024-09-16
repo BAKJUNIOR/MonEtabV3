@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,14 +21,15 @@ import java.util.List;
 @ToString
 public class Student extends Person{
 
-    @Column(unique=true , name = "matricule")
+    @NotBlank(message = "Le matricule est obligatoire")
+    @Column(unique = true, name = "matricule")
     private String matricule;
 
-    @OneToMany(  mappedBy = "student")
-    @Column(nullable = true)
+    @OneToMany(mappedBy = "student")
     private List<Absence> absence;
 
-    @Column(name = "phone_number_parent" )
+    @NotBlank(message = "Le numéro de téléphone du parent est obligatoire")
+    @Column(name = "phone_number_parent")
     private String phoneNumberParent;
 
 

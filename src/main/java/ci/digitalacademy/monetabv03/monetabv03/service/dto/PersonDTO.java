@@ -29,9 +29,10 @@ public class PersonDTO {
     private String urlPicture;
 
     private Gender gender;
+    private String slug;
 
     private AddressDTO address;
 
-    private User user;
+    private UserDTO user;
 
 }

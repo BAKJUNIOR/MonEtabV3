@@ -19,24 +19,28 @@ public class SecurityConfig {
                 .csrf(csrfConfigurer -> csrfConfigurer.disable()) // Désactiver la protection CSRF pour cette configuration
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll() // Autoriser les types de requêtes FORWARD et ERROR
+                        .requestMatchers("/swagger-ui/**").permitAll() // Permettre l'accès au point de terminaison swagger-ui et tout ce qui suit
+                        .requestMatchers("/v3/api-docs/**").permitAll() // Permettre l'accès au point
                         .requestMatchers("/css/**").permitAll() // Permettre l'accès aux ressources css
                         .requestMatchers("/images/**").permitAll() // Permettre l'accès aux ressources images
                         .requestMatchers("/js/**").permitAll() // Permettre l'accès aux ressources js
+                        .requestMatchers("/public/**").permitAll() // Accès aux ressources publiques
                         .requestMatchers("/reports").permitAll() // Autoriser l'accès au point de terminaison /reports
-                         .requestMatchers("/public/**").permitAll() // Accès aux ressources publiques
-
-                                .requestMatchers("/schools/**").permitAll()
-                                .requestMatchers("/appSettings/**").permitAll()
-                                .requestMatchers("api/students/**").permitAll()
-                                .requestMatchers("api/teachers/**").permitAll()
-                                .requestMatchers("/login").anonymous()
-
-                                .requestMatchers("/").permitAll()
-                                .requestMatchers("/users/**").permitAll()
-                                .requestMatchers("/index").permitAll()
-
+                        .requestMatchers("/reports/**").permitAll() // Permettre l'accès au point
+                         .requestMatchers("/schools/**").permitAll()
+                         .requestMatchers("/appSettings/**").permitAll()
+                         .requestMatchers("/api/**").permitAll()
+                         .requestMatchers("/login").anonymous()
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/index").permitAll()
                         .requestMatchers("/students/**").permitAll() // Accès aux ressources publiques
                         .anyRequest().authenticated() // Toutes les autres demandes nécessitent une authentification
+
+
+
+
+
                 )
                 .formLogin(login -> login
                         .loginPage("/login").permitAll() // Autoriser l'accès à la page de connexion

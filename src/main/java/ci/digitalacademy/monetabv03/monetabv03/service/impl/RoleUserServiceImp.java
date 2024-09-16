@@ -1,5 +1,6 @@
 package ci.digitalacademy.monetabv03.monetabv03.service.impl;
 
+import ci.digitalacademy.monetabv03.monetabv03.models.RoleUser;
 import ci.digitalacademy.monetabv03.monetabv03.repositories.RoleUserRepository;
 import ci.digitalacademy.monetabv03.monetabv03.service.RoleUserService;
 import ci.digitalacademy.monetabv03.monetabv03.service.dto.RoleUserDTO;
@@ -19,7 +20,8 @@ public class RoleUserServiceImp implements RoleUserService {
     private final RoleUserMapper roleUserMapper;
     @Override
     public RoleUserDTO save(RoleUserDTO roleUserDTO) {
-        return roleUserMapper.ToDto(roleUserRepository.save(roleUserMapper.DtoToEntity(roleUserDTO)));
+        RoleUser roleUser = roleUserMapper.DtoToEntity(roleUserDTO);
+        return roleUserMapper.ToDto(roleUserRepository.save(roleUser));
     }
 
     @Override
@@ -47,7 +49,8 @@ public class RoleUserServiceImp implements RoleUserService {
     }
     @Override
     public Optional<RoleUserDTO> findOne(Long id) {
-        return Optional.empty();
+        return roleUserRepository.findById(id)
+                .map(roleUserMapper::ToDto);
     }
 
     @Override
@@ -66,4 +69,11 @@ public class RoleUserServiceImp implements RoleUserService {
         }
         return getAll();
     }
+
+    @Override
+    public List<RoleUserDTO> findByRole(String roleUser) {
+        return roleUserRepository.findBynameRole(roleUser).stream().map(role -> {
+            return roleUserMapper.ToDto(role);
+        }).toList();
+}
 }

@@ -14,6 +14,7 @@ import java.util.Set;
 public class UserDTO {
 
     private Long id_user;
+    private String slug ;
 
     private String pseudo;
 
