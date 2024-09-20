@@ -1,22 +1,25 @@
 package ci.digitalacademy.monetabv03.monetabv03.service.impl;
 
 
+import ci.digitalacademy.monetabv03.monetabv03.models.RoleUser;
 import ci.digitalacademy.monetabv03.monetabv03.models.Student;
 import ci.digitalacademy.monetabv03.monetabv03.models.User;
 import ci.digitalacademy.monetabv03.monetabv03.repositories.UserRepository;
+import ci.digitalacademy.monetabv03.monetabv03.service.RoleUserService;
 import ci.digitalacademy.monetabv03.monetabv03.service.UserService;
+import ci.digitalacademy.monetabv03.monetabv03.service.dto.RoleUserDTO;
 import ci.digitalacademy.monetabv03.monetabv03.service.dto.UserDTO;
+import ci.digitalacademy.monetabv03.monetabv03.service.mapper.RoleUserMapper;
 import ci.digitalacademy.monetabv03.monetabv03.service.mapper.UserMapper;
 import ci.digitalacademy.monetabv03.monetabv03.service.mapping.StudentMapping;
 import ci.digitalacademy.monetabv03.monetabv03.service.mapping.UserMapping;
 import ci.digitalacademy.monetabv03.monetabv03.utils.SlugifyUtils;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,11 +27,26 @@ public class  UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final RoleUserMapper roleUserMapper;
+    private final RoleUserService roleUserService;
+
     @Override
     public UserDTO save(UserDTO userDTO) {
         User user = userMapper.DtoToEntity(userDTO);
         user.setSlug(SlugifyUtils.generate(user.getPseudo()));
         user.setCreatedDate(Instant.now());
+
+        // Vérifiez que les rôles existent et associez-les
+        Set<RoleUser> roles = new HashSet<>();
+        if (userDTO.getRoleUser() != null) {
+            for (RoleUserDTO roleUserDTO : userDTO.getRoleUser()) {
+                RoleUserDTO roleDTO = roleUserService.findOne(roleUserDTO.getIdRoleUser())
+                        .orElseThrow(() -> new EntityNotFoundException("Rôle non trouvé : " + roleUserDTO.getIdRoleUser()));
+                RoleUser role = roleUserMapper.DtoToEntity(roleDTO);
+                roles.add(role);
+            }
+        }
+        user.setRoleUser(roles);
 
         return userMapper.ToDto(userRepository.save(user));
     }

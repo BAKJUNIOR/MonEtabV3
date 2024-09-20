@@ -15,6 +15,8 @@ public class School {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id_school;
 
+    @Column(unique = true)
+    private String Slug;
     @Column(nullable = false , name = "name_school")
     private String nameSchool;
 

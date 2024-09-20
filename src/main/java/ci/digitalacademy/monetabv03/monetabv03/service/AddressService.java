@@ -1,16 +1,17 @@
 package ci.digitalacademy.monetabv03.monetabv03.service;
 
 
+
 import ci.digitalacademy.monetabv03.monetabv03.service.dto.AddressDTO;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface AddressService {
 
+public interface AddressService {
     AddressDTO save(AddressDTO addressDTO);
     AddressDTO update(AddressDTO addressDTO);
-    Optional<AddressDTO> findById(Long id);
-    List<AddressDTO> findAll();
-    void deleteById(Long id);
+    void delete(Long id);
+    List<AddressDTO> getAll();
+    Optional<AddressDTO> findOne(Long id);
 }

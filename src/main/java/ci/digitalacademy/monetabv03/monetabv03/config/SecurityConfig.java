@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -38,9 +39,6 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // Toutes les autres demandes nécessitent une authentification
 
 
-
-
-
                 )
                 .formLogin(login -> login
                         .loginPage("/login").permitAll() // Autoriser l'accès à la page de connexion
@@ -54,8 +52,10 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID") // Supprimer le cookie de session après déconnexion
                         .permitAll() // Permettre à chacun de se déconnecter
                 )
-                . exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")); // Rediriger vers la page de connexion si non authentifié
+                .sessionManagement(session -> session // Crée une session d'état pour les utilisateurs se connectant via le formulaire
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt()); // Utiliser OAuth2 pour les API sécurisées via JWT
 
         return http.build();
     }

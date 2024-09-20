@@ -29,5 +29,6 @@ public class FileStorageServiceImp implements ci.digitalacademy.monetabv03.monet
         System.out.println(upload);
         return  upload.get("url").toString();
     }
+
 }
 

@@ -24,25 +24,22 @@ import java.util.*;
 public class UserResource {
     private  final UserService userService;
     @PostMapping
-    public ResponseEntity<?> saveUser(@Valid @RequestBody UserDTO user) {
-        log.info("REST Request to save user : {}", user);
+    public ResponseEntity<?> saveUser(@Valid @RequestBody UserDTO userDTO) {
+        log.info("REST Request to save user: {}", userDTO);
 
-        // Validation de l'étudiant
-        List<String> errors =  validateUser(user);
+        // Validation de l'utilisateur (vous pouvez implémenter cette méthode)
+        List<String> errors = validateUser(userDTO);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        UserDTO savedUser = userService.save(user);
+        UserDTO savedUser = userService.save(userDTO);
 
-        // Préparer la réponse avec le message de succès et les détails de l'étudiant enregistré
+        // Préparer la réponse avec le message de succès et les détails de l'utilisateur enregistré
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
-                "message", "user a été enregistré avec succès.",
+                "message", "L'utilisateur a été enregistré avec succès.",
                 "user", savedUser
         ));
-
-
-
     }
 
 
@@ -132,10 +129,10 @@ public class UserResource {
             errors.add("Le slug ne doit pas dépasser 100 caractères");
         }
 
-//        // Validation des rôles
-//        if (user.getRoleUser() == null || user.getRoleUser().isEmpty()) {
-//            errors.add("Au moins un rôle est obligatoire");
-//        }
+        // Validation des rôles
+        if (user.getRoleUser() == null || user.getRoleUser().isEmpty()) {
+            errors.add("Au moins un rôle est obligatoire");
+        }
 
 //        // Validation de l'école
 //        if (user.getSchool() == null) {

@@ -2,10 +2,13 @@ package ci.digitalacademy.monetabv03.monetabv03.service.impl;
 
 
 
+import ci.digitalacademy.monetabv03.monetabv03.models.School;
+import ci.digitalacademy.monetabv03.monetabv03.models.Student;
 import ci.digitalacademy.monetabv03.monetabv03.repositories.SchoolRepository;
 import ci.digitalacademy.monetabv03.monetabv03.service.SchoolService;
 import ci.digitalacademy.monetabv03.monetabv03.service.dto.SchoolDTO;
 import ci.digitalacademy.monetabv03.monetabv03.service.mapper.SchoolMapper;
+import ci.digitalacademy.monetabv03.monetabv03.utils.SlugifyUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,9 @@ public class SchoolServiceImp implements SchoolService {
     private final SchoolMapper schoolMapper;
     @Override
     public SchoolDTO save(SchoolDTO schoolDTO) {
-        return schoolMapper.ToDto(schoolRepository.save(schoolMapper.DtoToEntity(schoolDTO)));
+        School school = schoolMapper.DtoToEntity(schoolDTO);
+        school.setSlug(SlugifyUtils.generate(school.getNameSchool()));
+        return schoolMapper.ToDto(schoolRepository.save(school));
     }
 
     @Override

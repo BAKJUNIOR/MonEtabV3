@@ -1,31 +1,29 @@
 package ci.digitalacademy.monetabv03.monetabv03.web.resources;
 
-import ci.digitalacademy.monetabv03.monetabv03.repositories.StudentRepository;
 import ci.digitalacademy.monetabv03.monetabv03.service.StudentService;
-import ci.digitalacademy.monetabv03.monetabv03.service.dto.*;
-import ci.digitalacademy.monetabv03.monetabv03.utils.SlugifyUtils;
+import ci.digitalacademy.monetabv03.monetabv03.service.dto.RegistrationStudentDTO;
+import ci.digitalacademy.monetabv03.monetabv03.service.dto.ResponseRegisterStudentDTO;
+import ci.digitalacademy.monetabv03.monetabv03.service.dto.StudentDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.*;
 
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/students")
-public class StudentResource {
+@RequestMapping("/api/schools")
+public class SchoolsResource {
     private  final StudentService studentService;
     @PostMapping
     public ResponseEntity<?> saveStudent(@Valid @RequestBody StudentDTO student) {
-        log.info("REST Request to save Students : {}", student);
+        log.info("REST Request to save Student : {}", student);
 
         // Validation de l'étudiant
         List<String> errors = validateStudent(student);
@@ -51,22 +49,11 @@ public class StudentResource {
         }
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<?>uploadPictureStudent(@ModelAttribute FileStudentDTO fileStudentDTO) throws IOException {
-        StudentDTO studentDTO = studentService.uploadStudentPicture(fileStudentDTO.getId_person(), fileStudentDTO.getFile());
-        if(studentDTO != null){
-            return new ResponseEntity<>(studentDTO,HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>("student not found",HttpStatus.NOT_FOUND);
-        }
-    }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateStudent(@RequestBody StudentDTO student, @PathVariable Long id) {
-        log.info("REST Request to update Students : {} {}", student, id);
+        log.info("REST Request to update Student : {} {}", student, id);
 
-        // Vérifiez si l'étudiant existe en utilisant findById
         Optional<StudentDTO> studentOptional = studentService.findById(id);
 
         if (!studentOptional.isPresent()) {

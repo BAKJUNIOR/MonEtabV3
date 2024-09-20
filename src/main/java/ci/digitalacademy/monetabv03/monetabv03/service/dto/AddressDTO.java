@@ -1,13 +1,13 @@
 package ci.digitalacademy.monetabv03.monetabv03.service.dto;
 
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class AddressDTO {
 
     private Long id_adress;
@@ -17,4 +17,6 @@ public class AddressDTO {
     private String city;
 
     private String street;
+
+
 }

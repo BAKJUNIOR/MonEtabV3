@@ -24,6 +24,7 @@ public class RoleUserServiceImp implements RoleUserService {
         return roleUserMapper.ToDto(roleUserRepository.save(roleUser));
     }
 
+
     @Override
     public RoleUserDTO update(RoleUserDTO roleUserDTO) {
         return null;

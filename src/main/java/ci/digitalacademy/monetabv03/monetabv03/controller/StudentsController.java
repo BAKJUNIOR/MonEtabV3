@@ -32,7 +32,7 @@ public class StudentsController {
     public String showAddStudentPage(Model model) {
 
         StudentDTO studentDTO = new StudentDTO();
-        studentDTO.setAddress(new AddressDTO());
+//        studentDTO.setAddress(new AddressDTO());
 
         model.addAttribute("student", studentDTO);
         model.addAttribute("action", "add");

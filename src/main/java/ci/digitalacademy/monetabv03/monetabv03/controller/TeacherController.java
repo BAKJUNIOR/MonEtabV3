@@ -34,7 +34,7 @@ public class TeacherController {
     public String showAddStudentPage(Model model) {
 
         TeacherDTO teacherDTO = new TeacherDTO();
-        teacherDTO.setAddress(new AddressDTO());
+//        teacherDTO.setAddress(new AddressDTO());
 
         model.addAttribute("teacher", teacherDTO);
         model.addAttribute("gender", Gender.values());

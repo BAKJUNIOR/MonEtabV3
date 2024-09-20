@@ -9,6 +9,8 @@ import lombok.Setter;
 public class SchoolDTO {
 
     private Long id_school;
+    private String Slug;
+
 
     private String nameSchool;
 
